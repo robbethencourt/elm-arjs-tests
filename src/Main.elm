@@ -1,19 +1,34 @@
 module Main exposing (..)
 
-import Html exposing (Html, text, div, h1)
+import Html exposing (Html, text, div, h1, p, ul, li)
 import Html.Attributes exposing (class)
+import Html.Events exposing (onClick)
 
 
 ---- MODEL ----
 
 
 type alias Model =
-    {}
+    { images : List Image }
+
+
+type alias Image =
+    { name : String
+    , url : String
+    }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( {}, Cmd.none )
+    ( { images =
+            [ { name = "Blue Circles", url = "http://res.cloudinary.com/du9exzlar/image/upload/v1492033088/zdd8tdtkdyyjo6dadcto.jpg" }
+            , { name = "Abstract Seaside", url = "http://res.cloudinary.com/du9exzlar/image/upload/v1492618920/xyj4jy1rm66ols3tdc39.jpg" }
+            , { name = "Charcoal Picasso", url = "http://res.cloudinary.com/du9exzlar/image/upload/v1492033007/dkzmp0yvxscngj2ghnhj.jpg" }
+            , { name = "Fire Lines", url = "http://res.cloudinary.com/du9exzlar/image/upload/v1492033057/wujmqxdsdnq3pxiqmjc3.jpg" }
+            ]
+      }
+    , Cmd.none
+    )
 
 
 
@@ -21,12 +36,14 @@ init =
 
 
 type Msg
-    = NoOp
+    = SendImageToArjs String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        SendImageToArjs url ->
+            ( model, Cmd.none )
 
 
 
@@ -36,7 +53,16 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div [ class "container" ]
-        [ h1 [ class "text-center" ] [ text "Let's test some ar.js in elm!" ] ]
+        [ h1 [ class "text-center" ] [ text "Let's test some ar.js in elm!" ]
+        , ul []
+            (List.map imageList model.images)
+        , p [] [ text "need to create port to send image to arjs" ]
+        ]
+
+
+imageList : Image -> Html Msg
+imageList img =
+    li [ onClick (SendImageToArjs img.url) ] [ text img.name ]
 
 
 
