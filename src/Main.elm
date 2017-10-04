@@ -1,4 +1,4 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Html exposing (Html, text, div, h1, p, ul, li)
 import Html.Attributes exposing (class)
@@ -43,7 +43,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         SendImageToArjs url ->
-            ( model, Cmd.none )
+            ( model, sendImageToArjs url )
 
 
 
@@ -77,3 +77,10 @@ main =
         , update = update
         , subscriptions = \_ -> Sub.none
         }
+
+
+
+-- PORTS --
+
+
+port sendImageToArjs : String -> Cmd msg
