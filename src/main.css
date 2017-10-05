@@ -5,3 +5,10 @@
 a-scene {
   padding-top: 200px;
 }
+
+.delete-arjs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
