@@ -12,3 +12,7 @@ a-scene {
   left: 0;
   z-index: 10;
 }
+
+#arjsDebugUIContainer {
+  display: none;
+}
