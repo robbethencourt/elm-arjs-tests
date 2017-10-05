@@ -10,10 +10,14 @@ app.ports.sendImageToArjs.subscribe((imageUrl) => {
   const aImage = document.createElement('a-image')
   const aMarker = document.createElement('a-marker-camera')
 
+  // set attributes for a-scene
+  arScene.setAttribute('embedded')
+  arScene.setAttribute('artoolkit', 'sourceType: webcam;')
+
   // set attributes on a-image
   aImage.setAttribute('src', imageUrl)
   aImage.setAttribute('width', '1.67')
-  aImage.setAttribute('position', {x: 0, y: 0, z: 0})
+  aImage.setAttribute('position', '0 0 0')
   aImage.setAttribute('scale', '1 1 1')
   aImage.setAttribute('rotation', '90 -90 90')
 
