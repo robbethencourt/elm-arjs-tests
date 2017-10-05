@@ -63,7 +63,7 @@ view model =
         [ h1 [ class "text-center" ] [ text "Let's test some ar.js in elm!" ]
         , ul []
             (List.map imageList model.images)
-        , p [] [ text "need to create port to send image to arjs" ]
+        , p [] [ text "need to create port to send image to arjs. did this." ]
         , if model.arMode then
             button [ class "delete-arjs", onClick DeleteArjsMarkup ] [ text "Exit AR" ]
           else
