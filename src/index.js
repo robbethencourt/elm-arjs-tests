@@ -25,3 +25,21 @@ app.ports.sendImageToArjs.subscribe((imageUrl) => {
   arScene.appendChild(aMarker)
   arjsContent.appendChild(arScene)
 })
+
+app.ports.deleteArjsMarkup.subscribe(() => {
+  navigator.getUserMedia({audio: false, video: true},
+    function (stream) {
+      var track = stream.getTracks()[0]
+      track.stop()
+    },
+    function (error) {
+      console.log('getUserMedia() error', error)
+    })
+
+  const arjsContent = document.getElementById('arjs-content')
+  arjsContent.removeChild(arjsContent.childNodes[1])
+  const arjsUi = document.getElementById('arjsDebugUIContainer')
+  arjsUi.parentNode.removeChild(arjsUi)
+  const videoEl = document.querySelector('video')
+  videoEl.parentNode.removeChild(videoEl)
+})

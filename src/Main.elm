@@ -40,7 +40,7 @@ init =
 
 type Msg
     = SendImageToArjs String
-    | DeleteArjs
+    | DeleteArjsMarkup
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -49,8 +49,8 @@ update msg model =
         SendImageToArjs url ->
             ( { model | arMode = True }, sendImageToArjs url )
 
-        DeleteArjs ->
-            ( { model | arMode = False }, Cmd.none )
+        DeleteArjsMarkup ->
+            ( { model | arMode = False }, deleteArjsMarkup () )
 
 
 
@@ -65,7 +65,7 @@ view model =
             (List.map imageList model.images)
         , p [] [ text "need to create port to send image to arjs" ]
         , if model.arMode then
-            button [ class "delete-arjs", onClick DeleteArjs ] [ text "Exit AR" ]
+            button [ class "delete-arjs", onClick DeleteArjsMarkup ] [ text "Exit AR" ]
           else
             div [] []
         ]
@@ -95,3 +95,6 @@ main =
 
 
 port sendImageToArjs : String -> Cmd msg
+
+
+port deleteArjsMarkup : () -> Cmd msg
