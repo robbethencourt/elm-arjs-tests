@@ -1,19 +1,37 @@
-module Main exposing (..)
+port module Main exposing (..)
 
-import Html exposing (Html, text, div, h1)
+import Html exposing (Html, text, div, h1, p, ul, li, button)
 import Html.Attributes exposing (class)
+import Html.Events exposing (onClick)
 
 
 ---- MODEL ----
 
 
 type alias Model =
-    {}
+    { images : List Image
+    , arMode : Bool
+    }
+
+
+type alias Image =
+    { name : String
+    , url : String
+    }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( {}, Cmd.none )
+    ( { images =
+            [ { name = "Blue Circles", url = "http://res.cloudinary.com/du9exzlar/image/upload/v1492033088/zdd8tdtkdyyjo6dadcto.jpg" }
+            , { name = "Abstract Seaside", url = "http://res.cloudinary.com/du9exzlar/image/upload/v1492618920/xyj4jy1rm66ols3tdc39.jpg" }
+            , { name = "Charcoal Picasso", url = "http://res.cloudinary.com/du9exzlar/image/upload/v1492033007/dkzmp0yvxscngj2ghnhj.jpg" }
+            , { name = "Fire Lines", url = "http://res.cloudinary.com/du9exzlar/image/upload/v1492033057/wujmqxdsdnq3pxiqmjc3.jpg" }
+            ]
+      , arMode = False
+      }
+    , Cmd.none
+    )
 
 
 
@@ -21,12 +39,18 @@ init =
 
 
 type Msg
-    = NoOp
+    = SendImageToArjs String
+    | DeleteArjsMarkup
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        SendImageToArjs url ->
+            ( { model | arMode = True }, sendImageToArjs url )
+
+        DeleteArjsMarkup ->
+            ( { model | arMode = False }, deleteArjsMarkup () )
 
 
 
@@ -36,7 +60,20 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div [ class "container" ]
-        [ h1 [ class "text-center" ] [ text "Let's test some ar.js in elm!" ] ]
+        [ h1 [ class "text-center" ] [ text "Let's test some ar.js in elm!" ]
+        , ul []
+            (List.map imageList model.images)
+        , p [] [ text "need to create port to send image to arjs" ]
+        , if model.arMode then
+            button [ class "delete-arjs", onClick DeleteArjsMarkup ] [ text "Exit AR" ]
+          else
+            div [] []
+        ]
+
+
+imageList : Image -> Html Msg
+imageList img =
+    li [ onClick (SendImageToArjs img.url) ] [ text img.name ]
 
 
 
@@ -51,3 +88,13 @@ main =
         , update = update
         , subscriptions = \_ -> Sub.none
         }
+
+
+
+-- PORTS --
+
+
+port sendImageToArjs : String -> Cmd msg
+
+
+port deleteArjsMarkup : () -> Cmd msg
